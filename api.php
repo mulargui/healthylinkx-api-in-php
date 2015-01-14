@@ -25,7 +25,7 @@ private function dbConnect()
 }
 
 //Public method for access api.
-//This method dynmically call the method based on the query string
+//This method dynamically calls the method based on the query string
 public function processApi()
 {
 	$func = strtolower(trim(str_replace("/","",$_REQUEST['rquest'])));
@@ -121,7 +121,7 @@ private function providers()
 	while($rlt = mysql_fetch_array($sql,MYSQL_ASSOC))
  		$result[] = $rlt;
 	
-	// If success everythig is good send header as "OK" and return list of providers in JSON format
+	// If success everything is good send header as "OK" and return list of providers in JSON format
  	$this->response($this->json($result), 200);
 }
 
@@ -171,7 +171,7 @@ private function transaction()
 	while($rlt = mysql_fetch_array($sql,MYSQL_ASSOC))
 		$result[] = $rlt;
 
-	// If success everythig is good send header as "OK" and return list of providers in JSON format
+	// If success everything is good send header as "OK" and return list of providers in JSON format
 	$this->response($this->json($result), 200);
 }
 
@@ -192,7 +192,7 @@ private function taxonomy()
 	while($rlt = mysql_fetch_array($sql,MYSQL_ASSOC))
 		$result[] = $rlt;
 
-	// If success everythig is good send header as "OK" and return list of specialities in JSON format
+	// If success everything is good send header as "OK" and return list of specialities in JSON format
 	$this->response($this->json($result), 200);
 }
 private function shortlist()
@@ -219,7 +219,7 @@ private function shortlist()
 
 	//return the transaction ID
 	$result = array();
-	$result["transaction"] = mysql_insert_id();
+	$result["Transaction"] = mysql_insert_id();
 	
 	//return detailed data of the selected providers
 	$query = "SELECT NPI,Provider_Full_Name,Provider_Full_Street, Provider_Full_City,
@@ -236,10 +236,12 @@ private function shortlist()
 	if(mysql_num_rows($sql) <= 0)
 		$this->response('no NPI records',204); // If no records "No Content" status
 
+	$providersdata = array();
 	while($rlt = mysql_fetch_array($sql,MYSQL_ASSOC))
-		$result[] = $rlt;
+		$providersdata[] = $rlt;
+	$result["Providers"] = $providersdata;
 
-	// If success everythig is good send header as "OK" and return list of providers in JSON format
+	// If success everything is good send header as "OK" and return list of providers in JSON format
 	$this->response($this->json($result), 200);
 }
 
