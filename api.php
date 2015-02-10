@@ -19,7 +19,15 @@ public function __construct()
 //Database connection
 private function dbConnect()
 {
-	$this->db = mysql_connect(DB_SERVER,DB_USER,DB_PASSWORD);
+	//support for docker, first we try to get the ip address of the MySQL container
+	$hostname=DB_SERVER;
+	$ip = gethostbyname($hostname);
+	
+	//we connect to the docker container or to the localhost
+	if(strcmp($ip,$hostname)!==0)
+		$this->db = mysql_connect($ip,DB_USER,DB_PASSWORD);
+	else
+		$this->db = mysql_connect("127.0.0.1",DB_USER,DB_PASSWORD);
 	if($this->db)
 		mysql_select_db(DB,$this->db);
 }
